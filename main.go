@@ -40,7 +40,7 @@ func main() {
 
 func liff(w http.ResponseWriter, r *http.Request) {
 	// The user accesses the linking URL.
-	tmpl := template.Must(template.ParseFiles("login.tmpl"))
+	tmpl := template.Must(template.ParseFiles("liff.tmpl"))
 	// The web server displays the login screen.
 	if err := tmpl.Execute(w, LIF_Setting); err != nil {
 		log.Println("Template err:", err)
