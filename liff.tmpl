@@ -1,23 +1,190 @@
+
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>回家了</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
 
-<head>
-  <meta charset="UTF-8">
-  <title>Log-in</title>
-</head>
+    <!-- Bootstrap -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  body {
+    background-color: #000000;
+  }
 
-<body>
+  button {
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+    height: 60px;
+  }
 
-  <center>
-    <h1>Log-in</h1><br>
-  <form action="login" method="post"><br>
-    Login ID:<input type="text" name="user" placeholder="Username"><br>
-    Password:<input type="password" name="pass" placeholder="Password"><br>
-  	<input type="hidden" value="{{.}}" name="token" />
-	<input type="submit" name="login" class="login login-submit" value="login"><br>
-  </form>
-</center>
+  .btn {
+    font-size: 15pt;
+    border-radius: 0;
+  }
 
-</body>
+  div[class*='col-'] {
+    text-align: center;
+    height: 60px;
+    display: table;
+    padding: 0;
+  }
+</style>
 
+  </head>
+  <body>
+    
+    
+<div class="container">
+  <div class="row">
+    <div class="col-xs-2">
+      <button type="button" class="btn btn-primary minute">5</button>
+    </div>
+    <div class="col-xs-2">
+      <button type="button" class="btn btn-primary minute">10</button>
+    </div>
+    <div class="col-xs-2">
+      <button type="button" class="btn btn-primary minute">15</button>
+    </div>
+    <div class="col-xs-2">
+      <button type="button" class="btn btn-primary minute">20</button>
+    </div>
+    <div class="col-xs-2">
+      <button type="button" class="btn btn-primary minute">25</button>
+    </div>
+    <div class="col-xs-2">
+      <button type="button" class="btn btn-primary minute">30</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-2">
+      <button type="button" class="btn btn-primary minute">35</button>
+    </div>
+    <div class="col-xs-2">
+      <button type="button" class="btn btn-primary minute">40</button>
+    </div>
+    <div class="col-xs-2">
+      <button type="button" class="btn btn-primary minute">45</button>
+    </div>
+    <div class="col-xs-2">
+      <button type="button" class="btn btn-primary minute">50</button>
+    </div>
+    <div class="col-xs-2">
+      <button type="button" class="btn btn-primary minute">55</button>
+    </div>
+    <div class="col-xs-2">
+      <button type="button" class="btn btn-primary minute">60</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <button id="btn" type="button" class="btn btn-success">分鐘後回家</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <button type="button" class="btn btn-warning">捷運因為事故停住了</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <button type="button" class="btn btn-warning">現在塞車了</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <button type="button" class="btn btn-success">我會到達</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <button type="button" class="btn btn-success">我出發了</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <button type="button" class="btn btn-success">平常時候到</button>
+    </div>
+  </div>
+</div>
+
+
+    
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vConsole/3.3.4/vconsole.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    //initVConsole();
+
+    liff
+      .init({
+        liffId: "{{.LIFFID}}"
+      })
+      .then(() => {
+        if (!liff.isInClient()) {
+          if (!liff.isLoggedIn()) {
+            liff.login({
+              redirectUri: "{{.LIFFRedirectURL}}"
+            })
+          }
+        }
+      })
+      .catch((err) => {
+        //document.getElementById("liffAppContent").classList.add('hidden');
+        //document.getElementById("liffInitErrorMessage").classList.remove('hidden');
+      });
+
+    let min;
+
+    $('button.minute').on('click', function() {
+      min = $(this).text()
+    });
+
+    $('button:not(.minute)').on('click', function() {
+      let message;
+      if($(this).text() == '分鐘後回家') {
+        if(min == undefined) {
+          alert("請先輸入時間")
+          return
+        }
+        else {
+          message = min + $(this).text()
+        }
+      } else {
+        message = $(this).text()
+      }
+
+      liff.shareTargetPicker([{
+          type: "text",
+          text: message
+        }])
+        .then(
+          //alert("ShareTargetPicker was launched")
+        ).catch(function(res) {
+          //alert("Failed to launch ShareTargetPicker")
+        })
+    });
+
+    function initVConsole() {
+      window.vConsole = new window.VConsole({
+        defaultPlugins: ['system', 'network', 'element', 'storage'],
+        maxLogNumber: 1000,
+        onReady: function() {
+          console.log('vConsole is ready.');
+        },
+        onClearLog: function() {
+          console.log('on clearLog');
+        }
+      });
+    }
+  })
+</script>
+
+  </body>
 </html>
