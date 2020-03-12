@@ -1,0 +1,2 @@
+web: liff-template-go
+
