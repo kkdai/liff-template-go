@@ -25,3 +25,14 @@ FAQ
 
 1. How to get my LIFF app ID?
 
+  - Remember to add LIFF App in LINE Login channel, refer to this [announcement](https://developers.line.biz/zh-hant/news/2020/02/05/liff-channel-type/).
+  - Go [LINE Developer console](https://developers.line.biz/console/) create a LINE Login channel.
+  - 
+
+
+2. Why it show "Error: user doesn't grant required permissions yet" when I call `liff.sendMessages()`?
+
+  - The root cause might be:
+    - Your user login session timeout, please run `liff.login()` again.
+    - Your channel is not using LINE Login, your user could not complete login process.
+
