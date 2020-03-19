@@ -31,6 +31,7 @@ FAQ
 2. Why it show "Error: user doesn't grant required permissions yet" when I call `liff.sendMessages()`?
 
   - The root cause might be:
+    - Make sure your LINE Login channel already change from "Developing" to "Published".
     - Your user login session timeout, please run `liff.login()` again.
     - Your channel is not using LINE Login, your user could not complete login process.
 
