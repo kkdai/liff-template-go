@@ -160,7 +160,9 @@
         message = $(this).text()
       }
 
-      liff.shareTargetPicker([{
+
+      if (liff.isApiAvailable('shareTargetPicker')) {
+        liff.shareTargetPicker([{
           type: "text",
           text: message
         }])
@@ -169,6 +171,14 @@
         ).catch(function(res) {
           //alert("Failed to launch ShareTargetPicker")
         })
+      } 
+      else {
+        alert("你的 LINE App 暫時不支援 Share Target Picker ，將開始外部瀏覽器。")
+        liff.openWindow({
+          url: "{{.LIFFRedirectURL}}",
+          external: true
+        });
+      }
     });
 
     function initVConsole() {
